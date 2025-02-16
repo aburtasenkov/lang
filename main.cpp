@@ -13,23 +13,23 @@ class Token {
         static constexpr unsigned char NUMERAL = 'N';
 
         constexpr Token() 
-            :_kind(0), int_value(0) {  }
+            :_kind(0), _numeral(0) {  }
 
         Token(unsigned char kind) 
-            :_kind(kind), int_value(0) {  }
+            :_kind(kind), _numeral(0) {  }
 
-        Token(unsigned char kind, unsigned int val)
-            :_kind(kind), int_value(val) {  }
+        Token(unsigned char kind, double val)
+            :_kind(kind), _numeral(val) {  }
 
         unsigned char kind() { return _kind; }
 
-        unsigned int value_int() { return int_value; }
+        double numerical_value() { return _numeral; }
 
         operator bool () { return kind(); }
         
     private:
         unsigned char _kind;
-        unsigned int int_value;
+        double _numeral;
 };
 
 class Token_stream {
@@ -52,7 +52,7 @@ class Token_stream {
             switch (get_kind(temp)) {
                 case Token::NUMERAL: {
                     input_stream.putback(temp);
-                    unsigned int value;
+                    double value;
                     input_stream >> value;
                     return {Token::NUMERAL, value};
                 }
@@ -89,7 +89,7 @@ double primary(Token_stream& ts) {
     Token t = ts.get_token();
 
     switch (t.kind()) {
-        case '(': { // handle anyting in parentheses as primary
+        case '(': { // handle anyting in parentheses as a numerical value
             double d = expression(ts);
             Token t = ts.get_token();
             if (t.kind() != ')') throw BAD_SYNTAX;
@@ -98,7 +98,7 @@ double primary(Token_stream& ts) {
         case '-':
             return -primary(ts);
         default:
-            return t.value_int();
+            return t.numerical_value();
     }
 }
 
@@ -108,20 +108,18 @@ double term(Token_stream& ts) {
         Token t = ts.get_token();
         
         switch (t.kind()) {
-            case '*': {
+            case '*': 
                 left *= primary(ts);
                 break;
-            }
             case '/': {
                 double d = primary(ts);
                 if (d == 0) throw ZERO_DEVISION;
                 left /= d;
                 break;
             }
-            default: {
+            default:
                 ts.putback(t);
                 return left;
-            }
         }
     }
 }
@@ -153,8 +151,7 @@ try {
     Token_stream ts{std::cin};
 
     while (true) {
-        std::cout << ">>> ";
-        std::cout << expression(ts) << "\n";
+        std::cout << ">>> " << expression(ts) << "\n";
     }
 
     return 0;
