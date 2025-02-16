@@ -13,7 +13,7 @@ According to the Token._kind, a token may have an initialized additional value (
 
 ### Token_stream
 Gets initialized with istream& and uses it to parse the incoming text stream. Reads istream character by character and classifies input into tokens:
-    ( 2 + 2 ) * 3 + pi
-    ( I + I ) * I + CC
+    >>> ( 2 + 2 ) * 3 + pi
+    // ( I + I ) * I + CC
 
 If a number is the first char of a Token, it is put back into the istream and read as a double.
