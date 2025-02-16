@@ -5,7 +5,7 @@ Interpreted Programming Language - IPL
 ## Methodic
 ### Token
 Tokens may be of different kinds:
-- Sequence of characters: 'C'\n
+- Sequence of characters: 'C'
 - Numerical values: 'N'
 - Symbolic character: Token._kind represents the value
             
