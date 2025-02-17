@@ -4,15 +4,13 @@
 #include <string>
 
 #include "Exception.hpp"
+#include "Token_constants.hpp"
 
 static const Exception BAD_SYNTAX("BAD_SYNTAX");
 static const Exception BUFFER_ERROR("BUFFER ERROR");
 
 class Token {
     public:
-        static constexpr unsigned char NAME = 'T';
-        static constexpr unsigned char NUMERAL = 'N';
-
         Token() {  }
 
         Token(unsigned char kind) 
@@ -56,17 +54,17 @@ class Token_stream {
             if (!input_stream.good()) throw BAD_SYNTAX;
 
             switch (get_kind(temp)) {
-                case Token::NUMERAL: {
+                case Token_constants::NUMERAL: {
                     input_stream.putback(temp);
                     double value;
                     input_stream >> value;
-                    return {Token::NUMERAL, value};
+                    return {Token_constants::NUMERAL, value};
                 }
-                case Token::NAME: {
+                case Token_constants::NAME: {
                     input_stream.putback(temp);
                     std::string text;
                     input_stream >> text;
-                    return {Token::NAME, text};
+                    return {Token_constants::NAME, text};
                 }
                 default:
                     return {get_kind(temp)};
@@ -89,8 +87,8 @@ class Token_stream {
                     return c;
                 case '1': case '2': case '3': case '4': case '5':
                 case '6': case '7': case '8': case '9': case '0':
-                    return Token::NUMERAL;
+                    return Token_constants::NUMERAL;
             }
-            return Token::NAME;
+            return Token_constants::NAME;
         }
 };
