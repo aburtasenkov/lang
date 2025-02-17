@@ -1,7 +1,3 @@
-#include <iostream>
-#include <fstream>
-#include <string>
-
 #include "Exception.hpp"
 #include "Token_stream.hpp"
 #include "arithmetics.hpp"

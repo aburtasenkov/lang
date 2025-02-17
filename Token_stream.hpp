@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <string>
 
 #include "Exception.hpp"
 
@@ -9,7 +10,7 @@ static const Exception BUFFER_ERROR("BUFFER ERROR");
 
 class Token {
     public:
-        static constexpr unsigned char CHARACTER = 'C';
+        static constexpr unsigned char NAME = 'T';
         static constexpr unsigned char NUMERAL = 'N';
 
         Token() {  }
@@ -49,7 +50,7 @@ class Token_stream {
                 return t;
             }
 
-            unsigned char temp;
+            char temp;
             input_stream >> temp;
 
             if (!input_stream.good()) throw BAD_SYNTAX;
@@ -60,6 +61,12 @@ class Token_stream {
                     double value;
                     input_stream >> value;
                     return {Token::NUMERAL, value};
+                }
+                case Token::NAME: {
+                    input_stream.putback(temp);
+                    std::string text;
+                    input_stream >> text;
+                    return {Token::NAME, text};
                 }
                 default:
                     return {get_kind(temp)};
@@ -84,6 +91,6 @@ class Token_stream {
                 case '6': case '7': case '8': case '9': case '0':
                     return Token::NUMERAL;
             }
-            return Token::CHARACTER;
+            return Token::NAME;
         }
 };
