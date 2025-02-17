@@ -6,16 +6,21 @@
 #include <variant>
 
 // allowed variable types in IPL interptered 
-using Types = std::variant<double, int64_t>;
+using Types = std::variant<double, int>;
 
 template <typename T>
 void define_var(std::unordered_map<std::string, Types>& symbol_tbl, const std::string& key, const T& value) {
-    std::cout << typeid(T).name() << "\t" << typeid(double).name() << "\t" << typeid(int64_t).name() << "\n";
-    if (typeid(T) == typeid(double) || typeid(T) == typeid(int64_t)) {
+    if (typeid(T) == typeid(double) || typeid(T) == typeid(int)) {
         symbol_tbl[key] = value;
         return;
     }
     throw std::runtime_error{"Bad Variable Definition"};
+}
+
+void compute(std::unordered_map<std::string, Types>& symbol_tbl, Token_stream& ts) {
+    Token t = ts.get_token();
+
+
 }
 
 int main() 
@@ -25,14 +30,13 @@ try {
 
     // constant values
     define_var(symbol_tbl, "pi", 3.141592);
+    define_var(symbol_tbl, "pi_floor", 3);
 
     Token_stream ts{std::cin};
 
     while (true) {
         std::cout << ">>> ";
-        Token t = ts.get_token();
-        if (t.name() == Token_constants::DEFINE_VAR) 
-        // std::cout << expression(ts) << "\n";
+        compute(symbol_tbl, ts);
     }
 
     return 0;
