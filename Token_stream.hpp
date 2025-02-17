@@ -12,24 +12,29 @@ class Token {
         static constexpr unsigned char CHARACTER = 'C';
         static constexpr unsigned char NUMERAL = 'N';
 
-        constexpr Token() 
-            :_kind(0), _numeral(0) {  }
+        Token() {  }
 
         Token(unsigned char kind) 
-            :_kind(kind), _numeral(0) {  }
+            :_kind(kind) {  }
 
         Token(unsigned char kind, double val)
             :_kind(kind), _numeral(val) {  }
+
+        Token(unsigned char kind, const std::string& name)
+            :_kind(kind), _name(name) {  }
 
         unsigned char kind() { return _kind; }
 
         double numerical_value() { return _numeral; }
 
+        const std::string& name() { return _name; }
+
         operator bool () { return kind(); }
         
     private:
-        unsigned char _kind;
-        double _numeral;
+        unsigned char _kind = 0;
+        double _numeral = 0;
+        std::string _name = "";
 };
 
 class Token_stream {
