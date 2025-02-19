@@ -3,13 +3,13 @@
 #include <malloc.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define NAME_SIZE 64
 
 #define TOKEN_EMPTY 0
 #define TOKEN_NAME 'T'
 #define TOKEN_NUMERAL 'N'
-
 
 typedef struct {
     unsigned char kind;
@@ -121,4 +121,21 @@ void free_token(Token * t) {
     if (!t) return;
     if (t->value) free(t->value);
     free(t);
+}
+
+Token * token_deep_copy(Token * t) {
+    Token * new_token = (Token *)malloc(sizeof(Token));
+    new_token->kind = t->kind;
+    switch (t->kind) {
+        case TOKEN_NUMERAL:
+            new_token->value = (__int64_t *)malloc(sizeof(__int64_t));
+            new_token->value = t->value;
+            return new_token;
+        case TOKEN_NAME:
+            new_token->value = (char *)malloc(NAME_SIZE);
+            strcpy(new_token->value, t->value);
+            return new_token;
+        default:
+            return new_token;
+    }
 }
