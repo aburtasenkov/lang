@@ -11,7 +11,7 @@ Tokens may be of different kinds:
 
 Tokens have an additional member void * value which will be casted according to the token's kind:
 - 'T' -> (char*)
-- 'N' -> (__int64_t)
+- 'N' -> (__int64_t*)
 
 ### Token_stream
 Gets initialized with istream& and uses it to parse the incoming text stream. Reads istream character by character and classifies input into tokens:
