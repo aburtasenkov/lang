@@ -24,3 +24,6 @@ Gets initialized with istream& and uses it to parse the incoming text stream. Re
 - 0 - Everything went according to plan :)
 - 1 - Malloc did not succeed
 - 2 - arithmetical error during mathematical operations
+
+## Special Thanks to
+djb2 - for the hash function in Symbol_table.h
