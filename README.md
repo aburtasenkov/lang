@@ -2,6 +2,12 @@
 
 Interpreted Programming Language - IPL
 
+## How to compile
+Simply compile the main file. If you want the executable to be named IPL - execute this command in terminal with gcc: 
+```
+gcc -o IPL main.c
+```
+
 ## Methodic
 ### Token
 Tokens may be of different kinds:
