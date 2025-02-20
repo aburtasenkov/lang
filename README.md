@@ -25,5 +25,12 @@ Gets initialized with istream& and uses it to parse the incoming text stream. Re
 - 1 - Malloc did not succeed
 - 2 - arithmetical error during mathematical operations
 
+## Terminal Input
+```
+./filename + ...
+- -d or --debug:
+Debugging mode. Each token will output its kind and its value if it has one.
+```
+
 ## Special Thanks to
 djb2 - for the hash function in Symbol_table.h
