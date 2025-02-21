@@ -42,6 +42,7 @@ Gets initialized with istream& and uses it to parse the incoming text stream. Re
 - 0 - Everything went according to plan :)
 - 1 - Malloc did not succeed
 - 2 - arithmetical error during mathematical operations
+- 3 - Bad Syntax
 
 ## Terminal Input
 ```
