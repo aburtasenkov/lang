@@ -8,6 +8,18 @@ Simply compile the main file. If you want the executable to be named IPL - execu
 gcc -o IPL main.c
 ```
 
+## Syntax
+# Types
+string for character sequences
+integer for integers :)
+
+# Variable Initialisation
+```
+int pi = 3;
+// VAR_TYPE VAR_NAME = VALUE;
+
+```
+
 ## Methodic
 ### Token
 Tokens may be of different kinds:
