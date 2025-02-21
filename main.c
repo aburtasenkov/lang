@@ -1,11 +1,27 @@
 #include "Token.h"
 #include "arithmetics.h"
 #include "Symbol_table.h"
+#include "Exceptions.h"
 
 typedef enum {
     STATUS_DEFAULT = 0,
     STATUS_DEBUG = 1  
 } Status;
+
+void compute() {
+    Token * t = get_token();
+
+    switch (t->kind) {
+        case TOKEN_TEXT:
+            break;
+        case TOKEN_NUMERAL:
+            break;
+        default: // TOKEN_EMPTY
+            BAD_SYNTAX_ERROR();
+    }
+
+    free_token(t);
+}
 
 int main(int argc, char ** argv) {
     unsigned char status = STATUS_DEFAULT;
@@ -30,7 +46,7 @@ int main(int argc, char ** argv) {
         printf("Kind - %c\t", t->kind);
 
         switch (t->kind) {
-            case TOKEN_NAME:
+            case TOKEN_TEXT: case TOKEN_TYPE:
                 if (t->value) printf("Value - %s", (char*)t->value);
                 break;
             case TOKEN_NUMERAL:
