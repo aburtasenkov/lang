@@ -3,6 +3,7 @@
 #include <malloc.h>
 
 #include "Token.h"
+#include "Exceptions.h"
 
 /*
 Variables are saved in Tokens. Token.kind is the kind of value that void * value holds.
@@ -33,11 +34,11 @@ size_t hash(const char * str) {
 
 Entry * make_entry(char * key, Token * value) {
     Entry * entry = (Entry *)malloc(sizeof(Entry));
-    if (!entry) exit(1);
+    if (!entry) MALLOC_ALLOCATION_ERROR();
 
     // copy key into entry 
     entry->key = (char *)malloc(strlen(key) + 1);
-    if (!entry->key) exit(1);
+    if (!entry->key) MALLOC_ALLOCATION_ERROR();
     strcpy(entry->key, key);
 
     // copy token
@@ -54,11 +55,11 @@ void free_entry(Entry * entry) {
 
 Symbol_table * make_symbol_table(size_t size) {
     Symbol_table * tbl = (Symbol_table*)malloc(sizeof(Symbol_table));
-    if (!tbl) exit(1);
+    if (!tbl) MALLOC_ALLOCATION_ERROR();
     tbl->size = size;
 
     tbl->array = (Entry**)calloc(size, sizeof(Entry*));
-    if (!tbl->array) exit(1);
+    if (!tbl->array) MALLOC_ALLOCATION_ERROR();
 
     return tbl;
 }
@@ -66,7 +67,7 @@ Symbol_table * make_symbol_table(size_t size) {
 void tbl_resize(Symbol_table * tbl, size_t new_size) {
     // create new array of entries for tbl
     Entry** new_array = (Entry**)calloc(new_size, sizeof(Entry*));
-    if (!new_array) exit(1);
+    if (!new_array) MALLOC_ALLOCATION_ERROR();
 
     // reallocate from old array into new
     for (size_t old_index = 0; old_index < tbl->size; ++old_index)

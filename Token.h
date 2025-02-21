@@ -2,8 +2,9 @@
 
 #include <malloc.h>
 #include <ctype.h>
-#include <stdlib.h>
 #include <string.h>
+
+#include "Exceptions.h"
 
 #define NAME_SIZE 64
 
@@ -21,7 +22,7 @@ static unsigned char BUFFER = 0;
 
 Token * make_token(unsigned char kind, void * value) {
     Token * t = (Token *)malloc(sizeof(Token));
-    if (!t) exit(1);
+    if (!t) MALLOC_ALLOCATION_ERROR();
     t->kind = kind;
     t->value = value;
     return t;
@@ -55,7 +56,7 @@ unsigned char get_char_buffer() {
 // return void * to integer input from getchar()
 void * get_integer_input(unsigned char digit) {
     __int64_t * integer = malloc(sizeof(__int64_t));
-    if (!integer) exit(1);
+    if (!integer) MALLOC_ALLOCATION_ERROR();
 
     *integer = digit - 48;  // already read the first digit
     
@@ -75,7 +76,7 @@ void * get_integer_input(unsigned char digit) {
 // return void * to name input from getchar()
 void * get_name_input(unsigned char c) {
     char* name = (char*)malloc(NAME_SIZE);
-    if (!name) exit(1);
+    if (!name) MALLOC_ALLOCATION_ERROR();
     name[0] = c;
     for (__uint16_t i = 1; i < NAME_SIZE - 1; ++i) {
         c = getchar();

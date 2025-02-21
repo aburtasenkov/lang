@@ -1,9 +1,9 @@
 #pragma once
 
 #include <ctype.h>
-#include <stdio.h>
 
 #include "Token.h"
+#include "Exceptions.h"
 
 __int64_t expression();
 
@@ -16,10 +16,7 @@ __int64_t primary() {
         __int64_t d = expression();
         free_token(t);
         Token * t = get_token();
-        if (t->kind != ')') {
-            printf("Bad Syntax\n");
-            exit(2);
-        }
+        if (t->kind != ')') BAD_SYNTAX_ERROR();
         free_token(t);
         return d;
     }
@@ -32,8 +29,7 @@ __int64_t primary() {
         return value;
     default:
         TOKEN_BUFFER = t;
-        printf("Bad Syntax\n");
-        exit(2);
+        BAD_SYNTAX_ERROR();
         return 0;
     }
 }
@@ -50,10 +46,7 @@ __int64_t term() {
                 break;
             case '/':
                 __int64_t d = primary();
-                if (d == 0) {
-                    printf("Zero Division Error\n");
-                    exit(2);
-                }
+                if (d == 0) ZERO_DIVISION_ERROR();
                 left /= d;
                 free_token(t);
                 break;
