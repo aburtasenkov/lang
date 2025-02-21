@@ -14,8 +14,6 @@
 #define TOKEN_NUMERAL 'N'
 #define TOKEN_TYPE 'T'
 
-static const char* types_arr[] = {"string", "int"}; 
-
 typedef struct {
     unsigned char kind;
     void * value;
@@ -128,7 +126,7 @@ Token * get_token() {
         }
         case TOKEN_TEXT: {
             value = get_name_input(ch);
-            if (name_in_array(value, types_arr, 2)) kind = TOKEN_TYPE;
+            if (name_in_array(value, types_arr, types_arr_size)) kind = TOKEN_TYPE;
             break;
         }
         default: break;
