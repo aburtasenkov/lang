@@ -5,12 +5,16 @@
 #include <string.h>
 
 #include "Exceptions.h"
+#include "Syntax.h"
 
 #define NAME_SIZE 64
 
 #define TOKEN_EMPTY 0
-#define TOKEN_NAME 'T'
+#define TOKEN_TEXT 'C'
 #define TOKEN_NUMERAL 'N'
+#define TOKEN_TYPE 'T'
+
+static const char* types_arr[] = {"string", "int"}; 
 
 typedef struct {
     unsigned char kind;
@@ -28,8 +32,17 @@ Token * make_token(unsigned char kind, void * value) {
     return t;
 }
 
+// return true if t->value is in array
+static unsigned char name_in_array(const char * name, const char * arr[], unsigned char arr_size) {
+    if (!name) return 0;
+
+    for (unsigned char i = 0; i < arr_size; ++i)
+        if (!strcmp(name, arr[i])) return 1;
+    return 0;
+}
+
 static inline unsigned char get_token_kind(unsigned char c) {
-    if (isalpha(c)) return TOKEN_NAME;
+    if (isalpha(c)) return TOKEN_TEXT;
     if (isdigit(c)) return TOKEN_NUMERAL;
     if (ispunct(c)) return c;
     return TOKEN_EMPTY;
@@ -42,6 +55,7 @@ Token * get_token_buffer() {
         TOKEN_BUFFER = NULL;
         return t;
     }
+    return NULL;
 }
 
 // return char buffer
@@ -51,6 +65,7 @@ unsigned char get_char_buffer() {
         BUFFER = 0;
         return ch;
     }
+    return 0;
 }
 
 // return void * to integer input from getchar()
@@ -78,7 +93,9 @@ void * get_name_input(unsigned char c) {
     char* name = (char*)malloc(NAME_SIZE);
     if (!name) MALLOC_ALLOCATION_ERROR();
     name[0] = c;
-    for (__uint16_t i = 1; i < NAME_SIZE - 1; ++i) {
+
+    __uint16_t i;
+    for (i = 1; i < NAME_SIZE - 1; ++i) {
         c = getchar();
         if (!isalpha(c)) {
             BUFFER = c;
@@ -86,7 +103,8 @@ void * get_name_input(unsigned char c) {
         }
         name[i] = c;
     }
-    name[NAME_SIZE - 1] = '\0';
+    name[i] = '\0';
+
     return name;
 }
 
@@ -108,8 +126,9 @@ Token * get_token() {
             value = get_integer_input(ch);
             break;
         }
-        case TOKEN_NAME: {
+        case TOKEN_TEXT: {
             value = get_name_input(ch);
+            if (name_in_array(value, types_arr, 2)) kind = TOKEN_TYPE;
             break;
         }
         default: break;
@@ -127,12 +146,15 @@ void free_token(Token * t) {
 Token * token_deep_copy(Token * t) {
     Token * new_token = (Token *)malloc(sizeof(Token));
     new_token->kind = t->kind;
+
+    if (!t->value) return new_token;
+
     switch (t->kind) {
         case TOKEN_NUMERAL:
             new_token->value = (__int64_t *)malloc(sizeof(__int64_t));
-            new_token->value = t->value;
+            *(__int64_t*)new_token->value = *(__int64_t*)t->value;
             return new_token;
-        case TOKEN_NAME:
+        case TOKEN_TEXT:
             new_token->value = (char *)malloc(NAME_SIZE);
             strcpy(new_token->value, t->value);
             return new_token;
