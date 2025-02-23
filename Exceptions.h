@@ -21,3 +21,8 @@ void BAD_SYNTAX_ERROR() {
     printf("Bad Syntax\n");
     exit(3);
 }
+
+void VAR_LOOKUP_ERROR() {
+    printf("Error occured during lookup of non-existing variable");
+    exit(4);
+}
