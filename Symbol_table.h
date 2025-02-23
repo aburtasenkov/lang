@@ -64,6 +64,16 @@ Symbol_table * make_symbol_table(size_t size) {
     return tbl;
 }
 
+void free_symbol_table(Symbol_table * tbl) {
+    if (!tbl) return;
+
+    for (size_t i = 0; i < tbl->size; ++i)
+        if (tbl->array[i]) free_entry(tbl->array[i]);
+        
+    free(tbl->array);
+    free(tbl);
+}
+
 void tbl_resize(Symbol_table * tbl, size_t new_size) {
     // create new array of entries for tbl
     Entry** new_array = (Entry**)calloc(new_size, sizeof(Entry*));
