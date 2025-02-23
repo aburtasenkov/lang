@@ -69,7 +69,7 @@ void free_symbol_table(Symbol_table * tbl) {
 
     for (size_t i = 0; i < tbl->size; ++i)
         if (tbl->array[i]) free_entry(tbl->array[i]);
-        
+
     free(tbl->array);
     free(tbl);
 }
@@ -118,6 +118,7 @@ void tbl_insert(Symbol_table * tbl, char * key, Token * t) {
     tbl->array[index] = make_entry(key, t);
 }
 
+// may return NULL pointer
 Entry * tbl_get(Symbol_table * tbl, char * key) {
     size_t index = hash(key) % tbl->size;
     return tbl->array[index];
