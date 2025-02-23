@@ -8,13 +8,60 @@ typedef enum {
     STATUS_DEBUG = 1  
 } Status;
 
-void compute() {
+// get input as long it is only alpha characters
+char * get_alpha_input() {
+    unsigned char c;
+    char* name = (char*)malloc(NAME_SIZE);
+    if (!name) MALLOC_ALLOCATION_ERROR();
+
+    __uint16_t i;
+    for (i = 0; i < NAME_SIZE - 1; ++i) {
+        c = getchar();
+        if (!isalpha(c)) {
+            BUFFER = c;
+            break;
+        }
+        name[i] = c;
+    }
+    name[i] = '\0';
+
+    return name;
+}
+
+void compute(Symbol_table * tbl) {
     Token * t = get_token();
 
     switch (t->kind) {
         case TOKEN_TEXT:
             break;
         case TOKEN_NUMERAL:
+            TOKEN_BUFFER = t;
+            printf("= %li\n", expression());
+            break;
+        case TOKEN_TYPE:
+            // get input and validate it
+            Token * name = get_token();
+            if (name->kind != TOKEN_TEXT) BAD_SYNTAX_ERROR();
+
+            Token * equal_sign = get_token();
+            if (equal_sign->kind != '=') BAD_SYNTAX_ERROR();
+            
+            Token * value = get_token();
+            if (!strcmp((char*)t->value, TYPE_INT))
+                if (value->kind != TOKEN_NUMERAL) BAD_SYNTAX_ERROR();
+            if (!strcmp((char*)t->value, TYPE_STRING))
+                if (value->kind != TOKEN_TEXT) BAD_SYNTAX_ERROR();
+
+            Token * dot_dash = get_token();
+            if (dot_dash->kind != ';') BAD_SYNTAX_ERROR();
+
+            tbl_insert(tbl, (char*)name->value, value);
+
+            free_token(name);
+            free_token(equal_sign);
+            free_token(value);
+            free_token(dot_dash);
+
             break;
         default: // TOKEN_EMPTY
             BAD_SYNTAX_ERROR();
@@ -36,7 +83,7 @@ int main(int argc, char ** argv) {
     }
 
     // obligatory vars
-    Symbol_table * tbl = make_symbol_table(1);
+    Symbol_table * tbl = make_symbol_table(8);
     
     // output all kinds of tokens
     if (status == STATUS_DEBUG) while (1) {
@@ -61,7 +108,7 @@ int main(int argc, char ** argv) {
     // STATUS_DEFAULT
     while (1) {
         printf(">>> ");
-        printf("= %li\n", expression());
+        compute(tbl);
     }
     
     return 0;
