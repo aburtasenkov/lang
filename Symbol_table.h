@@ -119,7 +119,7 @@ void tbl_insert(Symbol_table * tbl, char * key, Token * t) {
 }
 
 // may return NULL pointer
-Entry * tbl_get(Symbol_table * tbl, char * key) {
+Token * tbl_get(Symbol_table * tbl, char * key) {
     size_t index = hash(key) % tbl->size;
-    return tbl->array[index];
+    return tbl->array[index]->value;
 }
