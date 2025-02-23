@@ -60,8 +60,8 @@ void compute(Symbol_table * tbl) {
     switch (t->kind) {
         case TOKEN_TEXT: case TOKEN_NUMERAL:
             TOKEN_BUFFER = t;
-            printf("= %li\n", expression());
-            break;
+            printf("= %li\n", expression(tbl));
+            return;
         case TOKEN_TYPE:
             // t is a type token that holds name of the type as its value
             assign(tbl, (char*)t->value);
@@ -107,6 +107,9 @@ int main(int argc, char ** argv) {
         printf("\n");
         free_token(t);
     }
+
+    __int64_t pi = 3;
+    tbl_insert(tbl, "pi", make_token(get_token_kind('3'), &pi));
     
     // STATUS_DEFAULT
     while (1) {
