@@ -28,40 +28,43 @@ char * get_alpha_input() {
     return name;
 }
 
+void assign(Symbol_table * tbl, char * type) {
+    // get input and validate it
+    Token * name = get_token();
+    if (name->kind != TOKEN_TEXT) BAD_SYNTAX_ERROR();
+
+    Token * equal_sign = get_token();
+    if (equal_sign->kind != '=') BAD_SYNTAX_ERROR();
+    
+    Token * value = get_token();
+    if (!strcmp(type, TYPE_INT))
+        if (value->kind != TOKEN_NUMERAL) BAD_SYNTAX_ERROR();
+    if (!strcmp(type, TYPE_STRING))
+        if (value->kind != TOKEN_TEXT) BAD_SYNTAX_ERROR();
+
+    Token * dot_dash = get_token();
+    if (dot_dash->kind != ';') BAD_SYNTAX_ERROR();
+
+    tbl_insert(tbl, (char*)name->value, value);
+
+    free_token(name);
+    free_token(equal_sign);
+    free_token(value);
+    free_token(dot_dash);
+
+}
+
 void compute(Symbol_table * tbl) {
     Token * t = get_token();
 
     switch (t->kind) {
-        case TOKEN_TEXT:
-            break;
-        case TOKEN_NUMERAL:
+        case TOKEN_TEXT: case TOKEN_NUMERAL:
             TOKEN_BUFFER = t;
             printf("= %li\n", expression());
             break;
         case TOKEN_TYPE:
-            // get input and validate it
-            Token * name = get_token();
-            if (name->kind != TOKEN_TEXT) BAD_SYNTAX_ERROR();
-
-            Token * equal_sign = get_token();
-            if (equal_sign->kind != '=') BAD_SYNTAX_ERROR();
-            
-            Token * value = get_token();
-            if (!strcmp((char*)t->value, TYPE_INT))
-                if (value->kind != TOKEN_NUMERAL) BAD_SYNTAX_ERROR();
-            if (!strcmp((char*)t->value, TYPE_STRING))
-                if (value->kind != TOKEN_TEXT) BAD_SYNTAX_ERROR();
-
-            Token * dot_dash = get_token();
-            if (dot_dash->kind != ';') BAD_SYNTAX_ERROR();
-
-            tbl_insert(tbl, (char*)name->value, value);
-
-            free_token(name);
-            free_token(equal_sign);
-            free_token(value);
-            free_token(dot_dash);
-
+            // t is a type token that holds name of the type as its value
+            assign(tbl, (char*)t->value);
             break;
         default: // TOKEN_EMPTY
             BAD_SYNTAX_ERROR();
