@@ -6,24 +6,8 @@
 #include "Exceptions.h"
 #include "Symbol_table.h"
 
-__int64_t expression(Symbol_table * tbl);
-
-__int64_t primary(Symbol_table * tbl) {
-    Token * t = get_token();
-
-    switch (t->kind)
-    {
-    case '(': {
-        __int64_t d = expression(tbl);
-        free_token(t);
-        Token * t = get_token();
-        if (t->kind != ')') BAD_SYNTAX_ERROR();
-        free_token(t);
-        return d;
-    }
-    case '-':
-        free_token(t);  
-        return -primary(tbl);
+__int64_t get_int_val(Symbol_table * tbl, Token * t) {
+    switch (t->kind) {
     case TOKEN_NUMERAL:
         __int64_t value = *(__int64_t*)t->value;
         free_token(t);
@@ -39,7 +23,31 @@ __int64_t primary(Symbol_table * tbl) {
     default:
         TOKEN_BUFFER = t;
         BAD_SYNTAX_ERROR();
-        return 0;
+    }
+}
+
+__int64_t expression(Symbol_table * tbl);
+
+__int64_t primary(Symbol_table * tbl) {
+    Token * t = get_token();
+
+    switch (t->kind) {
+    case '(': {
+        __int64_t d = expression(tbl);
+        free_token(t);
+        Token * t = get_token();
+        if (t->kind != ')') BAD_SYNTAX_ERROR();
+        free_token(t);
+        return d;
+    }
+    case '-':
+        free_token(t);  
+        return -primary(tbl);
+    case TOKEN_NUMERAL: case TOKEN_TEXT:
+        return get_int_val(tbl, t);
+    default:
+        TOKEN_BUFFER = t;
+        BAD_SYNTAX_ERROR();
     }
 }
 
