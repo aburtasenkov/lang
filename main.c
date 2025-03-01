@@ -1,8 +1,8 @@
 #include "source/Token.h"
 #include "source/arithmetics.h"
 #include "source/Symbol_tbl.h"
-#include "source/Exceptions.h"
-#include "source/Syntax.h"
+#include "source/exceptions.h"
+#include "source/syntax.h"
 
 #include <malloc.h>
 #include <ctype.h>
