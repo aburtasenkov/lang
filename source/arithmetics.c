@@ -12,11 +12,9 @@ int get_int_val(Symbol_tbl_int * tbl, Token * t) {
         return value;
     case TOKEN_TEXT: {
         // variable?
-        Token * value = tbl_get_int(tbl, (char*)t->value);
-        if (!value) VAR_LOOKUP_ERROR(); 
-        if (value->kind != TOKEN_NUMERAL) BAD_SYNTAX_ERROR();
+        int value = tbl_get_int(tbl, (char*)t->value);
         free_token(t);
-        return *(int*)value->value;
+        return value;
     }
     default:
         TOKEN_BUFFER = t;
