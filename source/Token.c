@@ -1,7 +1,7 @@
 #include "Token.h"
 
-#include "Exceptions.h"
-#include "Syntax.h"
+#include "exceptions.h"
+#include "syntax.h"
 
 #include <malloc.h>
 #include <ctype.h>

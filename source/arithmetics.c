@@ -1,5 +1,5 @@
 #include "Token.h"
-#include "Exceptions.h"
+#include "exceptions.h"
 #include "Symbol_tbl.h"
 
 #include <ctype.h>
