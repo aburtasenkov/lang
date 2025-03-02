@@ -66,11 +66,11 @@ void compute(Symbol_tbl_int * tbl) {
 
     switch (t->kind) {
         case TOKEN_TEXT: case TOKEN_NUMERAL:
-            TOKEN_BUFFER = t;
+            putback_token(t);
             printf("= %i\n", expression(tbl));
             return;
         case TOKEN_TYPE:
-            TOKEN_BUFFER = t;
+            putback_token(t);
             assign(tbl);
             break;
         default: // TOKEN_EMPTY
