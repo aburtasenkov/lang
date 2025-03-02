@@ -23,6 +23,11 @@ void BAD_SYNTAX_ERROR() {
 }
 
 void VAR_LOOKUP_ERROR() {
-    printf("Error occured during lookup of non-existing variable");
+    printf("Error occured during lookup of non-existing variable\n");
     exit(4);
+}
+
+void FULL_BUFFER_ERROR() {
+    printf("Error occured during putback into buffer that is already full\n");
+    exit(5);
 }

@@ -120,6 +120,11 @@ Token * get_token() {
     return make_token(kind, value);
 }
 
+void putback_token(Token * t) {
+    if (TOKEN_BUFFER) FULL_BUFFER_ERROR();
+    TOKEN_BUFFER = t;
+}
+
 void free_token(Token * t) {
     if (!t) return;
     if (t->value) free(t->value);

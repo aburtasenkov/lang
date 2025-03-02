@@ -30,4 +30,5 @@ void * get_name_input(unsigned char c);
 
 Token * get_token_buffer();
 Token * get_token();
+void putback_token(Token * t);
 Token * token_deep_copy(Token * t);
