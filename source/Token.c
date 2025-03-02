@@ -69,7 +69,7 @@ void * get_integer_input(unsigned char digit) {
     while (1) {
         digit = getchar();
         if (!isdigit(digit)) {
-            BUFFER = digit; 
+            putback_char(digit);
             break;
         }
 
@@ -89,7 +89,7 @@ void * get_name_input(unsigned char c) {
     for (i = 1; i < NAME_SIZE - 1; ++i) {
         c = getchar();
         if (!isalpha(c)) {
-            BUFFER = c;
+            putback_char(c);
             break;
         }
         name[i] = c;
