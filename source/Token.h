@@ -21,7 +21,9 @@ static unsigned char name_in_array(const char * name, const char * arr[], unsign
 
 static inline unsigned char get_token_kind(unsigned char c);
 
+void putback_char(unsigned char c);
 unsigned char get_char_buffer();
+
 void * get_integer_input(unsigned char digit);
 void * get_name_input(unsigned char c);
 

@@ -44,6 +44,11 @@ Token * get_token_buffer() {
     return NULL;
 }
 
+void putback_char(unsigned char c) {
+    if (BUFFER) FULL_BUFFER_ERROR();
+    BUFFER = c;
+}
+
 // return char buffer
 unsigned char get_char_buffer() {
     if (BUFFER) {
