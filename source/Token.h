@@ -14,9 +14,6 @@ typedef struct {
     void * value;
 } Token;
 
-static Token * TOKEN_BUFFER = NULL;
-static unsigned char BUFFER = 0;
-
 Token * make_token(unsigned char kind, void * value);
 void free_token(Token * t);
 
