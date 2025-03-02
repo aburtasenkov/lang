@@ -23,7 +23,7 @@ char * get_alpha_input() {
     for (i = 0; i < NAME_SIZE - 1; ++i) {
         c = getchar();
         if (!isalpha(c)) {
-            BUFFER = c;
+            putback_char(c);
             break;
         }
         name[i] = c;
