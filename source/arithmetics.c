@@ -4,6 +4,8 @@
 
 #include <ctype.h>
 
+int expression(Symbol_tbl_int * tbl);
+
 int get_int_val(Symbol_tbl_int * tbl, Token * t) {
     switch (t->kind) {
     case TOKEN_NUMERAL:
