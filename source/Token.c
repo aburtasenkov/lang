@@ -7,6 +7,9 @@
 #include <ctype.h>
 #include <string.h>
 
+static Token * TOKEN_BUFFER = NULL;
+static unsigned char BUFFER = 0;
+
 Token * make_token(unsigned char kind, void * value) {
     Token * t = (Token *)malloc(sizeof(Token));
     if (!t) MALLOC_ALLOCATION_ERROR();
