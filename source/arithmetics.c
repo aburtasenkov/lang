@@ -19,7 +19,7 @@ int get_int_val(Symbol_tbl_int * tbl, Token * t) {
         return value;
     }
     default:
-        putback_token(t);
+        t = putback_token(t);
         BAD_SYNTAX_ERROR();
     }
 }
@@ -42,7 +42,7 @@ int primary(Symbol_tbl_int * tbl) {
     case TOKEN_NUMERAL: case TOKEN_TEXT:
         return get_int_val(tbl, t);
     default:
-        putback_token(t);
+        t = putback_token(t);
         BAD_SYNTAX_ERROR();
     }
 }
@@ -64,7 +64,7 @@ int term(Symbol_tbl_int * tbl) {
                 free_token(t);
                 break;
             default:
-                putback_token(t);
+                t = putback_token(t);
                 return left;
         }
     }
@@ -88,7 +88,7 @@ int expression(Symbol_tbl_int * tbl) {
                 free_token(t);
                 return left;
             default:
-                putback_token(t);
+                t = putback_token(t);
                 return left;
         }
     }
