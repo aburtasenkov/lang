@@ -23,7 +23,7 @@ char * get_alpha_input() {
     for (i = 0; i < NAME_SIZE - 1; ++i) {
         c = getchar();
         if (!isalpha(c)) {
-            putback_char(c);
+            c = putback_char(c);
             break;
         }
         name[i] = c;
@@ -45,20 +45,13 @@ void assign(Symbol_tbl_int * tbl) {
     if (equal_sign->kind != '=') BAD_SYNTAX_ERROR();
     
     // currently only supporting integer values
-    Token * value = get_token();
-    if (!strcmp((char*)var_type->value, TYPE_INT))
-        if (value->kind != TOKEN_NUMERAL) BAD_SYNTAX_ERROR();
+    int value = expression(tbl);
 
-    Token * dot_dash = get_token();
-    if (dot_dash->kind != ';') BAD_SYNTAX_ERROR();
-
-    tbl_add_int(tbl, (char*)var_name->value, *(int*)value);
+    tbl_add_int(tbl, (char*)var_name->value, value);
 
     free_token(var_type);
     free_token(var_name);
     free_token(equal_sign);
-    free_token(value);
-    free_token(dot_dash);
 }
 
 void compute(Symbol_tbl_int * tbl) {
@@ -66,18 +59,16 @@ void compute(Symbol_tbl_int * tbl) {
 
     switch (t->kind) {
         case TOKEN_TEXT: case TOKEN_NUMERAL:
-            putback_token(t);
+            t = putback_token(t);
             printf("= %i\n", expression(tbl));
             return;
         case TOKEN_TYPE:
-            putback_token(t);
+            t = putback_token(t);
             assign(tbl);
             break;
         default: // TOKEN_EMPTY
             BAD_SYNTAX_ERROR();
     }
-
-    free_token(t);
 }
 
 int main(int argc, char ** argv) {
