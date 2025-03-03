@@ -33,7 +33,7 @@ char * get_alpha_input() {
     return name;
 }
 
-void assign(Symbol_tbl_int * tbl) {
+void define_var(Symbol_tbl_int * tbl) {
     // get input and validate it
     Token * var_type = get_token();
     if (var_type->kind != TOKEN_TYPE) BAD_SYNTAX_ERROR();
@@ -64,7 +64,7 @@ void compute(Symbol_tbl_int * tbl) {
             return;
         case TOKEN_TYPE:
             t = putback_token(t);
-            assign(tbl);
+            define_var(tbl);
             break;
         default: // TOKEN_EMPTY
             BAD_SYNTAX_ERROR();
