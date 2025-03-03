@@ -44,9 +44,10 @@ Token * get_token_buffer() {
     return NULL;
 }
 
-void putback_char(unsigned char c) {
+unsigned char putback_char(unsigned char c) {
     if (BUFFER) FULL_BUFFER_ERROR();
     BUFFER = c;
+    return 0;
 }
 
 // return char buffer
@@ -69,7 +70,7 @@ void * get_integer_input(unsigned char digit) {
     while (1) {
         digit = getchar();
         if (!isdigit(digit)) {
-            putback_char(digit);
+            digit = putback_char(digit);
             break;
         }
 
@@ -89,7 +90,7 @@ void * get_name_input(unsigned char c) {
     for (i = 1; i < NAME_SIZE - 1; ++i) {
         c = getchar();
         if (!isalpha(c)) {
-            putback_char(c);
+            c = putback_char(c);
             break;
         }
         name[i] = c;
@@ -128,9 +129,10 @@ Token * get_token() {
     return make_token(kind, value);
 }
 
-void putback_token(Token * t) {
+void * putback_token(Token * t) {
     if (TOKEN_BUFFER) FULL_BUFFER_ERROR();
     TOKEN_BUFFER = t;
+    return NULL;
 }
 
 void free_token(Token * t) {
