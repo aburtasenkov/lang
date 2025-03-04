@@ -3,6 +3,7 @@
 #include "exceptions.h"
 #include "syntax.h"
 
+#include <stdio.h>
 #include <malloc.h>
 #include <ctype.h>
 #include <string.h>

@@ -1,7 +1,5 @@
 #pragma once
 
-#include <stdio.h>
-
 #define NAME_SIZE 64
 
 #define TOKEN_EMPTY 0
